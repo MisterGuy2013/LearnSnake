@@ -11,7 +11,7 @@ var QLearning = (function () {
   var discountFactor = 0.9; // Discount Factor of Future Rewards
   var randomize = 0.05; // Randomization Rate on Action
 
-  var availableActions = ['up', 'down', 'left', 'right'];
+  var availableActions = ['up', 'down', 'left'];
 
   var score = 0;
   var missed = 0;
@@ -62,7 +62,7 @@ var QLearning = (function () {
 
   var whichTable = function (s) {
     if(qTable[s] == undefined ) {
-      qTable[s] = { 'up':0, 'down':0, 'left':0, 'right':0 };
+      qTable[s] = { 'up':0, 'down':0, 'left':0 };
     }
     return qTable[s];
   }
@@ -98,7 +98,7 @@ var QLearning = (function () {
     var q0 = whichTable(state0);
     var q1 = whichTable(state1);
 
-    var newValue = reward + discountFactor * Math.max(q1.up, q1.down, q1.left, q1.right) - q0[act];
+    var newValue = reward + discountFactor * Math.max(q1.up, q1.down, q1.left) - q0[act];
     qTable[state0][act] = q0[act] + learningRate * newValue;
   }
 
@@ -183,6 +183,24 @@ var QLearning = (function () {
     qTable: {
       show: function () {
         console.table(qTable);
+      },
+      download: function(){
+        var dictstring = JSON.stringify(qTable);
+        function download(filename, text) {
+          var element = document.createElement('a');
+          element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+          element.setAttribute('download', filename);
+
+          element.style.display = 'none';
+          document.body.appendChild(element);
+
+          element.click();
+
+          document.body.removeChild(element);
+      }
+
+      // Start file download.
+      download("model.txt",dictstring);
       },
       export: function () {
         return qTable;

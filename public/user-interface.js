@@ -7,7 +7,7 @@ var UserInterface = (function () {
 
     const defaultFPS = 8;
     QLearning.run();
-    QLearning.changeSpeed(4);
+    QLearning.changeSpeed(1);
     QLearning.changeFPS(defaultFPS);
 
     /// EASTER EGG ///
